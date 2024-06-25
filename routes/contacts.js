@@ -11,6 +11,7 @@ const signinBodySchema = zod.object({
     username : zod.string(),
     password : zod.string()
 })
+//http://localhost:3000/api/v1/signin (post)
 contactRouter.post("/signin",(req,res)=>{
     const {success} = signinBodySchema.safeParse(req.body);
     if(!success){
@@ -35,6 +36,7 @@ const contactBodySchema = zod.object({
     name : zod.string(),
     number : zod.number(),
 })
+//http://localhost:3000/api/v1/contact (post)
 contactRouter.post("/contact",userMiddleware,async(req,res)=>{
     const {success} = contactBodySchema.safeParse(req.body);
     if(!success){
@@ -51,7 +53,7 @@ contactRouter.post("/contact",userMiddleware,async(req,res)=>{
         }]});
     if(existingContact){
         return res.status(400).json({
-            message : "User already exists"
+            message : "Contact already exists"
         })
     }
     try{
@@ -71,13 +73,14 @@ contactRouter.post("/contact",userMiddleware,async(req,res)=>{
 )
 //-----------------------------------------------------------------------------------------------------------------------
 
+
 const updateBodySchema = zod.object({
     name : zod.string(),
     email : zod.string().optional(),
     linkedin : zod.string().optional(),
     twitter : zod.string().optional()
 })
-
+//http://localhost:3000/api/v1/contact (put)
 contactRouter.put("/contact",userMiddleware,async(req,res)=>{
     const {success} = updateBodySchema.safeParse(req.body);
     if(!success){
@@ -85,7 +88,7 @@ contactRouter.put("/contact",userMiddleware,async(req,res)=>{
             message : "Invalid Entry"
         })
     }
-    const existingContact =Contact.find({name : req.body.name});
+    const existingContact = await Contact.findOne({name : req.body.name});
     if(!existingContact){
         return res.status(400).json({
             message : "Contact does not exist"
@@ -106,6 +109,7 @@ contactRouter.put("/contact",userMiddleware,async(req,res)=>{
 
 //-------------------------------------------------------------------------------------------------------------------------
 const search_tokenSchema = zod.string()
+// use http://localhost:3000/api/v1/contact/search (post)
 contactRouter.post("/contact/search",userMiddleware,async(req,res)=>{
     const {success} = search_tokenSchema.safeParse(req.body.search_token);
     if(!success){
