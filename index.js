@@ -4,6 +4,9 @@ const app = express();
 
 app.use(express.json());
 app.use("/api/v1",contactRouter)
+app.get("/",(req,res)=>{
+    res.send("Welcome to Contacto");
+})
 /*
 Forwarding all requests to the contact router.
 In future if we update the apis or create new set of apis we can simply change v1 to v2 (version 2) and forward requests to the new router
