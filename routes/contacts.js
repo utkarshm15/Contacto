@@ -6,6 +6,12 @@ const Contact = require("../db");
 const { encryptNumber, decryptNumber } = require("../controllers/encryption");
 const contactRouter = Router();
 
+//-----------------------------------------------------------------------------------------------------------------------
+contactRouter.get("/",(req,res)=>{
+    res.send("Welcome to Contacto");
+})
+
+
 //------------------------------------------------------------------------------------------------------------------
 const signinBodySchema = zod.object({
     username : zod.string(),
